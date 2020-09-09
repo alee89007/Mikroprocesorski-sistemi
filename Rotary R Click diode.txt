@@ -1,0 +1,56 @@
+/*
+ * Project name:
+     DEMO (Simple project)
+ * Copyright
+     (c) Mikroelektronika, 2011.
+ * Description:
+     This is a simple project. It turns on/off diodes connected to all ports.
+ * Test configuration:
+     MCU:             LPC2148
+     Dev.Board:       UNIDS6
+                      http://www.mikroe.com/eng/products/view/669/uni-ds6-develo
+     Oscillator:      12.0 MHz (cclk = 60.0 MHz, Fcco = 240.0 MHz)
+     Ext. Modules:    -
+     SW:              KEIL uVision v4.10
+ * NOTES:
+     - Turn ON LEDs on PORT0 and PORT1 (Switch SW12).
+*/
+
+
+#include <LPC214X.H>
+
+#include "Utility.h"
+
+
+
+int main (void)
+{
+	PINSEL0 = 0;
+	PINSEL1 = 0;
+	PINSEL2 = 0x00000000;
+	PINSEL2 = 0x00000000;
+	DelayProc(0.2 * CCLOCK);
+
+
+	IODIR0 = 0x00000000;					// PORT0[31..0] defined as ulaz
+	IODIR1 = 0xFFFFFFFF;					// PORT1[31..16] defined as Output
+
+
+	while (1){
+		a:	if(IO0PIN & (1<<5)){
+						IOSET1 = 0xF0000000;
+						IOCLR1 = 0x0F000000;
+						DelayProc(0.07 * CCLOCK);
+						if(IO0PIN & (1<<5)){
+						goto a;
+						}
+						}
+						b:	if(IO0PIN & (1<<4)){
+						IOSET1 = 0x0F000000;
+						IOCLR1 = 0xF0000000;
+						DelayProc(0.07 * CCLOCK);
+						if(IO0PIN & (1<<4)){
+						goto b;
+						}
+						}
+		}}
